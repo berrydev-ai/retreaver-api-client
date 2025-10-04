@@ -1,11 +1,10 @@
 # AffiliateWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**affiliate** | [**Affiliate**](Affiliate.md) |  | [optional] [default to undefined]
+| Name          | Type                          | Description | Notes                             |
+| ------------- | ----------------------------- | ----------- | --------------------------------- |
+| **affiliate** | [**Affiliate**](Affiliate.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { AffiliateWrapper } from 'retreaver-api-client';
 
 const instance: AffiliateWrapper = {
-    affiliate,
+  affiliate,
 };
 ```
 

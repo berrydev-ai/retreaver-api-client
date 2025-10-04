@@ -1,15 +1,14 @@
 # NumberMenuOptionsInnerMenuOption
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**id** | **number** |  | [optional] [default to undefined]
-**option** | **string** |  | [optional] [default to undefined]
-**target_number** | **string** |  | [optional] [default to undefined]
-**target_cid** | **string** |  | [optional] [default to undefined]
-**inherited** | **boolean** |  | [optional] [default to undefined]
+| Name              | Type        | Description | Notes                             |
+| ----------------- | ----------- | ----------- | --------------------------------- |
+| **id**            | **number**  |             | [optional] [default to undefined] |
+| **option**        | **string**  |             | [optional] [default to undefined] |
+| **target_number** | **string**  |             | [optional] [default to undefined] |
+| **target_cid**    | **string**  |             | [optional] [default to undefined] |
+| **inherited**     | **boolean** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -17,11 +16,11 @@ Name | Type | Description | Notes
 import { NumberMenuOptionsInnerMenuOption } from 'retreaver-api-client';
 
 const instance: NumberMenuOptionsInnerMenuOption = {
-    id,
-    option,
-    target_number,
-    target_cid,
-    inherited,
+  id,
+  option,
+  target_number,
+  target_cid,
+  inherited,
 };
 ```
 

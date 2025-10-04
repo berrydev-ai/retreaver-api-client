@@ -121,30 +121,30 @@ Follow these guidelines when writing tests:
 5. **Use existing mock utilities**
 
 ```typescript
-import { describe, it, expect, beforeEach } from 'vitest'
-import { CallsApi } from '../../../api/calls-api'
-import { setupHttpMocks, mockGet } from '../../mocks/http-mocks'
+import { describe, it, expect, beforeEach } from 'vitest';
+import { CallsApi } from '../../../api/calls-api';
+import { setupHttpMocks, mockGet } from '../../mocks/http-mocks';
 
 describe('CallsApi', () => {
-  let api: CallsApi
+  let api: CallsApi;
 
   beforeEach(() => {
-    setupHttpMocks()
-    api = new CallsApi(new Configuration({ apiKey: 'test-key' }))
-  })
+    setupHttpMocks();
+    api = new CallsApi(new Configuration({ apiKey: 'test-key' }));
+  });
 
   it('should retrieve calls successfully', async () => {
     // Arrange
-    const expectedResponse = { data: mockCallsV1ListResponse }
-    mockGet('/calls.json', expectedResponse.data)
+    const expectedResponse = { data: mockCallsV1ListResponse };
+    mockGet('/calls.json', expectedResponse.data);
 
     // Act
-    const result = await api.getCallsV1('test-api-key', 1)
+    const result = await api.getCallsV1('test-api-key', 1);
 
     // Assert
-    expect(result.data).toEqual(expectedResponse.data)
-  })
-})
+    expect(result.data).toEqual(expectedResponse.data);
+  });
+});
 ```
 
 For detailed testing guidelines, see [TESTING.md](./TESTING.md).
@@ -162,6 +162,7 @@ We use Prettier for code formatting. Configuration is in `.prettierrc`.
 ### Pre-commit Hooks
 
 Husky and lint-staged automatically:
+
 - **Lint and format** code before commits
 - **Run tests** before pushes
 
@@ -177,7 +178,7 @@ Husky and lint-staged automatically:
 
 ```typescript
 // Good
-import { Configuration, CallsApi } from '../api'
+import { Configuration, CallsApi } from '../api';
 
 /**
  * Fetches calls with optional filtering
@@ -185,21 +186,18 @@ import { Configuration, CallsApi } from '../api'
  * @param companyId - Optional company ID
  * @returns Promise resolving to calls data
  */
-export async function fetchCalls(
-  apiKey: string,
-  companyId?: number
-): Promise<CallV1[]> {
+export async function fetchCalls(apiKey: string, companyId?: number): Promise<CallV1[]> {
   try {
-    const config = new Configuration({ apiKey })
-    const api = new CallsApi(config)
-    
-    const response = await api.getCallsV1(apiKey, companyId)
-    return response.data
+    const config = new Configuration({ apiKey });
+    const api = new CallsApi(config);
+
+    const response = await api.getCallsV1(apiKey, companyId);
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(`API Error: ${error.response?.status}`)
+      throw new Error(`API Error: ${error.response?.status}`);
     }
-    throw error
+    throw error;
   }
 }
 ```
@@ -247,20 +245,24 @@ When creating a pull request, include:
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] All tests pass
 - [ ] New tests added
 - [ ] Coverage maintained
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -295,6 +297,7 @@ We follow [Semantic Versioning](https://semver.org/):
 ### Automated Releases
 
 Releases are automated through GitHub Actions when:
+
 - Merging to main branch
 - Creating a new tag
 

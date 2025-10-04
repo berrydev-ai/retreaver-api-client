@@ -8,21 +8,8 @@
     "rootDir": ".",
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": [
-    "*.ts",
-    "api/**/*.ts",
-    "models/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "tests",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/*.config.ts"
-  ]
+  "include": ["*.ts", "api/**/*.ts", "models/**/*.ts"],
+  "exclude": ["dist", "node_modules", "tests", "**/*.test.ts", "**/*.spec.ts", "**/*.config.ts"]
 }

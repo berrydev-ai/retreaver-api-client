@@ -1,14 +1,13 @@
 # MenuOption
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**id** | **number** |  | [optional] [default to undefined]
-**option** | **string** |  | [optional] [default to undefined]
-**target_number** | **string** |  | [optional] [default to undefined]
-**target_cid** | **string** |  | [optional] [default to undefined]
+| Name              | Type       | Description | Notes                             |
+| ----------------- | ---------- | ----------- | --------------------------------- |
+| **id**            | **number** |             | [optional] [default to undefined] |
+| **option**        | **string** |             | [optional] [default to undefined] |
+| **target_number** | **string** |             | [optional] [default to undefined] |
+| **target_cid**    | **string** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -16,10 +15,10 @@ Name | Type | Description | Notes
 import { MenuOption } from 'retreaver-api-client';
 
 const instance: MenuOption = {
-    id,
-    option,
-    target_number,
-    target_cid,
+  id,
+  option,
+  target_number,
+  target_cid,
 };
 ```
 

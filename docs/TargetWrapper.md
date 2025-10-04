@@ -1,11 +1,10 @@
 # TargetWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**target** | [**Target**](Target.md) |  | [optional] [default to undefined]
+| Name       | Type                    | Description | Notes                             |
+| ---------- | ----------------------- | ----------- | --------------------------------- |
+| **target** | [**Target**](Target.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { TargetWrapper } from 'retreaver-api-client';
 
 const instance: TargetWrapper = {
-    target,
+  target,
 };
 ```
 

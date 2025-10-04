@@ -1,14 +1,13 @@
 # TagValue
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**id** | **number** |  | [optional] [default to undefined]
-**key** | **string** |  | [optional] [default to undefined]
-**value** | **string** |  | [optional] [default to undefined]
-**operator** | **string** |  | [optional] [default to undefined]
+| Name         | Type       | Description | Notes                             |
+| ------------ | ---------- | ----------- | --------------------------------- |
+| **id**       | **number** |             | [optional] [default to undefined] |
+| **key**      | **string** |             | [optional] [default to undefined] |
+| **value**    | **string** |             | [optional] [default to undefined] |
+| **operator** | **string** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -16,10 +15,10 @@ Name | Type | Description | Notes
 import { TagValue } from 'retreaver-api-client';
 
 const instance: TagValue = {
-    id,
-    key,
-    value,
-    operator,
+  id,
+  key,
+  value,
+  operator,
 };
 ```
 

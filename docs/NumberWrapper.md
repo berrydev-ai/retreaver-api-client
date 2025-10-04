@@ -1,11 +1,10 @@
 # NumberWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**number** | [**Number**](Number.md) |  | [optional] [default to undefined]
+| Name       | Type                    | Description | Notes                             |
+| ---------- | ----------------------- | ----------- | --------------------------------- |
+| **number** | [**Number**](Number.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { NumberWrapper } from 'retreaver-api-client';
 
 const instance: NumberWrapper = {
-    number,
+  number,
 };
 ```
 

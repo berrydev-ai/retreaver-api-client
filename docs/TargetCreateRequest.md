@@ -1,11 +1,10 @@
 # TargetCreateRequest
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**target** | [**TargetCreateRequestTarget**](TargetCreateRequestTarget.md) |  | [default to undefined]
+| Name       | Type                                                          | Description | Notes                  |
+| ---------- | ------------------------------------------------------------- | ----------- | ---------------------- |
+| **target** | [**TargetCreateRequestTarget**](TargetCreateRequestTarget.md) |             | [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { TargetCreateRequest } from 'retreaver-api-client';
 
 const instance: TargetCreateRequest = {
-    target,
+  target,
 };
 ```
 
