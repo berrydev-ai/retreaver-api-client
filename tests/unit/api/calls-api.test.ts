@@ -156,10 +156,10 @@ describe('CallsApi', () => {
 
     it('should validate required parameters', async () => {
       // Act & Assert - generated code only validates null/undefined, not empty strings
-      await expect(api.getCallByUuidV1(null as any, 'some-uuid', 1))
+      await expect(api.getCallByUuidV1(null, 'some-uuid', 1))
         .rejects.toThrow('Required parameter apiKey was null or undefined')
 
-      await expect(api.getCallByUuidV1('test-api-key', null as any, 1))
+      await expect(api.getCallByUuidV1('test-api-key', null, 1))
         .rejects.toThrow('Required parameter uuid was null or undefined')
     })
 
