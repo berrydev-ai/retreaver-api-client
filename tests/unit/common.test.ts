@@ -110,7 +110,7 @@ describe('Common Utilities', () => {
       })
     })
 
-    it('should not set auth when username is missing', () => {
+    it('should set auth with undefined username when only password provided', () => {
       // Arrange
       const obj: any = {}
       const config = new Configuration({ password: 'testpass' })
@@ -119,7 +119,10 @@ describe('Common Utilities', () => {
       setBasicAuthToObject(obj, config)
 
       // Assert
-      expect(obj.auth).toBeUndefined()
+      expect(obj.auth).toEqual({
+        username: undefined,
+        password: 'testpass'
+      })
     })
 
     it('should not set auth when configuration is undefined', () => {

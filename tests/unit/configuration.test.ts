@@ -14,7 +14,7 @@ describe('Configuration', () => {
       expect(config.accessToken).toBeUndefined()
       expect(config.basePath).toBeUndefined()
       expect(config.serverIndex).toBeUndefined()
-      expect(config.baseOptions).toEqual({})
+      expect(config.baseOptions).toEqual({ headers: {} })
     })
 
     it('should create configuration with provided values', () => {

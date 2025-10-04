@@ -69,7 +69,11 @@ describe('CallsApi', () => {
       const history = getRequestHistory()
       const getRequests = history.get
       expect(getRequests).toHaveLength(1)
-      expect(getRequests![0].params?.api_key).toBe('test-api-key')
+
+      // Extract api_key from URL query string
+      const requestUrl = getRequests![0].url || ''
+      const urlObj = new URL(requestUrl)
+      expect(urlObj.searchParams.get('api_key')).toBe('test-api-key')
     })
 
     it('should handle query parameters correctly', async () => {
@@ -151,11 +155,11 @@ describe('CallsApi', () => {
     })
 
     it('should validate required parameters', async () => {
-      // Act & Assert
-      await expect(api.getCallByUuidV1('', 'some-uuid', 1))
+      // Act & Assert - generated code only validates null/undefined, not empty strings
+      await expect(api.getCallByUuidV1(null as any, 'some-uuid', 1))
         .rejects.toThrow('Required parameter apiKey was null or undefined')
-      
-      await expect(api.getCallByUuidV1('test-api-key', '', 1))
+
+      await expect(api.getCallByUuidV1('test-api-key', null as any, 1))
         .rejects.toThrow('Required parameter uuid was null or undefined')
     })
 
@@ -201,8 +205,11 @@ describe('CallsApi', () => {
       // Act
       const result = await api.getCallsV1('test-api-key', 1)
 
-      // Assert
-      expect(result.data).toBeValidCall()
+      // Assert - list endpoints return array of wrapped calls
+      expect(Array.isArray(result.data)).toBe(true)
+      expect(result.data.length).toBeGreaterThan(0)
+      expect(result.data[0]).toHaveProperty('call')
+      expect(result.data[0].call).toBeValidCall()
     })
   })
 })

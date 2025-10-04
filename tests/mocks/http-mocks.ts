@@ -12,16 +12,7 @@ export const mockAxios = new AxiosMockAdapter(axios, {
 export function setupHttpMocks() {
   // Reset all mocks
   mockAxios.reset()
-  
-  // Setup default headers
-  mockAxios.onAny().reply(config => {
-    // Add default headers if not present
-    config.headers = {
-      'Content-Type': 'application/json',
-      ...config.headers,
-    }
-    return [200, {}]
-  })
+  // Don't set up a default catch-all - let onNoMatch: 'throwException' handle unmatched requests
 }
 
 // Helper function to restore mocks
@@ -45,23 +36,38 @@ export function createMockErrorResponse(status: number, message: string, data?: 
 }
 
 // Helper function to mock a GET request
+// Accepts either a path (/calls.json) or full URL (https://...)
+// Uses regex matcher to handle both cases and ignore query parameters
 export function mockGet(url: string, response: any, status = 200) {
-  mockAxios.onGet(url).reply(status, response)
+  // Create a regex that matches the URL path regardless of base URL or query params
+  const urlPattern = url.startsWith('http')
+    ? new RegExp(`^${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+    : new RegExp(`^https?://[^/]+${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+  mockAxios.onGet(urlPattern).reply(status, response)
 }
 
 // Helper function to mock a POST request
 export function mockPost(url: string, response: any, status = 201) {
-  mockAxios.onPost(url).reply(status, response)
+  const urlPattern = url.startsWith('http')
+    ? new RegExp(`^${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+    : new RegExp(`^https?://[^/]+${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+  mockAxios.onPost(urlPattern).reply(status, response)
 }
 
 // Helper function to mock a PUT request
 export function mockPut(url: string, response: any, status = 200) {
-  mockAxios.onPut(url).reply(status, response)
+  const urlPattern = url.startsWith('http')
+    ? new RegExp(`^${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+    : new RegExp(`^https?://[^/]+${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+  mockAxios.onPut(urlPattern).reply(status, response)
 }
 
 // Helper function to mock a DELETE request
 export function mockDelete(url: string, status = 204) {
-  mockAxios.onDelete(url).reply(status)
+  const urlPattern = url.startsWith('http')
+    ? new RegExp(`^${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+    : new RegExp(`^https?://[^/]+${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+  mockAxios.onDelete(urlPattern).reply(status)
 }
 
 // Helper function to mock a request with specific parameters
@@ -88,18 +94,46 @@ export function verifyRequest(
 ) {
   const history = mockAxios.history
   const methodHistory = history[method.toLowerCase() as keyof typeof history]
-  
+
   const matchingRequest = methodHistory?.find(req => {
-    if (req.url !== url) return false
-    if (params && !deepEqual(req.params, params)) return false
+    // Handle both full URLs and paths
+    const requestUrl = req.url || ''
+    const urlMatch = url.startsWith('http')
+      ? requestUrl.split('?')[0] === url  // Full URL comparison (without query string)
+      : requestUrl.includes(url)           // Path comparison
+
+    if (!urlMatch) return false
+
+    // If params are provided, extract and compare query parameters from URL
+    if (params) {
+      try {
+        const urlObj = new URL(requestUrl)
+        const actualParams: Record<string, any> = {}
+        urlObj.searchParams.forEach((value, key) => {
+          actualParams[key] = value
+        })
+
+        // Convert expected params to strings for comparison (URL params are always strings)
+        const expectedParams: Record<string, string> = {}
+        Object.entries(params).forEach(([key, value]) => {
+          expectedParams[key] = String(value)
+        })
+
+        if (!deepEqual(actualParams, expectedParams)) return false
+      } catch (e) {
+        // If URL parsing fails, fall back to params object comparison
+        if (!deepEqual(req.params, params)) return false
+      }
+    }
+
     if (data && !deepEqual(JSON.parse(req.data || '{}'), data)) return false
     return true
   })
-  
+
   if (!matchingRequest) {
     throw new Error(`Expected ${method.toUpperCase()} request to ${url} was not made`)
   }
-  
+
   return matchingRequest
 }
 
