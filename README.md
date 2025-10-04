@@ -401,6 +401,75 @@ const call: CallV2 = {
 
 MIT
 
+## Testing
+
+This project includes a comprehensive test suite using Vitest. For detailed testing guidelines, see [TESTING.md](./TESTING.md).
+
+### Running Tests
+
+```bash
+# Development mode (watch)
+npm test
+
+# Run tests once
+npm run test:run
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests with UI
+npm run test:ui
+```
+
+### Test Structure
+
+- **Unit tests** for all API classes, models, and utilities
+- **Mock data** based on API documentation examples
+- **HTTP mocking** using axios-mock-adapter
+- **TypeScript support** with full type checking
+- **Coverage reporting** with 80% minimum threshold
+
+### Quality Assurance
+
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **Husky** for pre-commit hooks
+- **GitHub Actions** for CI/CD
+- **Security audits** with npm audit
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see [TESTING.md](./TESTING.md) for testing guidelines and [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed contribution guidelines.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/berrydev-ai/retreaver-api-client.git
+cd retreaver-api-client
+
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Build the project
+npm run build
+```
+
+### Pre-commit Hooks
+
+This project uses Husky and lint-staged to ensure code quality:
+
+- **Lint and format** code before commits
+- **Run tests** before pushes
+- **Type checking** for TypeScript files
+
+### Pull Request Process
+
+1. Fork the repository
+2. Create a feature branch
+3. Write tests for new functionality
+4. Ensure all tests pass and coverage is maintained
+5. Submit a pull request with a clear description
