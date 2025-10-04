@@ -1,0 +1,1973 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Retreaver Core API",
+    "version": "0.1",
+    "description": "The Retreaver Core API can be used to automate core business processes, like changing where calls are routed, and many other features that would normally be accessed through our account portal.\n\n**Authentication**: All requests require an API key passed as a query parameter `api_key`. If you have access to multiple companies, also pass `company_id`.\n\n**Format**: The API supports both JSON and XML. Use `.json` or `.xml` file extensions in the URL and set the appropriate Content-Type header.\n\n**Pagination**: Returns 25 results per page. Use the Link HTTP header to navigate pages.\n\n**Security Warning**: Never expose your API key publicly as it can be used to access your entire Retreaver account without restriction!",
+    "contact": {
+      "name": "Retreaver Support",
+      "url": "https://support.retreaver.com/"
+    },
+    "x-logo": {
+      "url": "https://retreaver.com/logo.png"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.retreaver.com",
+      "description": "Production server"
+    },
+    {
+      "url": "https://retreaverdata.com",
+      "description": "Data writing server (for call data writing endpoints only)"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Calls",
+      "description": "Access and manage phone call logs and data"
+    },
+    {
+      "name": "Calls V2",
+      "description": "Version 2 of the Calls API with additional fields"
+    },
+    {
+      "name": "Call Data Writing",
+      "description": "Apply tags to calls before or after they are processed"
+    },
+    {
+      "name": "Affiliates",
+      "description": "Manage affiliates (also known as Publishers or Sources)"
+    },
+    {
+      "name": "Targets",
+      "description": "Manage targets (destination phone numbers for call routing)"
+    },
+    {
+      "name": "Campaigns",
+      "description": "Manage campaigns with routing settings and IVR configuration"
+    },
+    {
+      "name": "Numbers",
+      "description": "Manage phone numbers routed to campaigns"
+    }
+  ],
+  "paths": {
+    "/calls.json": {
+      "get": {
+        "tags": ["Calls"],
+        "summary": "Get recent calls (V1)",
+        "description": "Provides access to the call log containing all calls made through numbers under your control.",
+        "operationId": "getCallsV1",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "created_at_start",
+            "in": "query",
+            "description": "Return calls created after this date (RFC3339 format)",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2016-01-01T00:00:00+00:00"
+            }
+          },
+          {
+            "name": "created_at_end",
+            "in": "query",
+            "description": "Return calls created before this date (RFC3339 format)",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2016-01-02T00:00:00+00:00"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "Sort calls by this field",
+            "schema": {
+              "type": "string",
+              "enum": ["created_at", "updated_at"],
+              "default": "created_at"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Sort order (Note: updated_at always returns desc)",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "desc"
+            }
+          },
+          {
+            "name": "caller",
+            "in": "query",
+            "description": "Filter by caller number (URL encoded, e.g., %2B13015236555)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_afid",
+            "in": "query",
+            "description": "Filter by affiliate ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_cid",
+            "in": "query",
+            "description": "Filter by campaign ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_tid",
+            "in": "query",
+            "description": "Filter by target ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sub_id",
+            "in": "query",
+            "description": "Filter by affiliate Sub ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination (25 results per page)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CallV1Wrapper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calls/{uuid}.json": {
+      "get": {
+        "tags": ["Calls"],
+        "summary": "Get a specific call by UUID (V1)",
+        "description": "Retrieve detailed information about a specific call using its UUID.",
+        "operationId": "getCallByUuidV1",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "description": "The UUID of the call",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallV1Wrapper"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/calls.json": {
+      "get": {
+        "tags": ["Calls V2"],
+        "summary": "Get recent calls (V2)",
+        "description": "Version 2 of the calls API with additional fields like affiliate_name, campaign_name, connected status, profit calculations, etc.",
+        "operationId": "getCallsV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "created_at_start",
+            "in": "query",
+            "description": "Return calls created after this date (RFC3339 format)",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "created_at_end",
+            "in": "query",
+            "description": "Return calls created before this date (RFC3339 format)",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["created_at", "updated_at"],
+              "default": "created_at"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "desc"
+            }
+          },
+          {
+            "name": "caller",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_afid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_cid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_tid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sub_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "call_flow_events",
+            "in": "query",
+            "description": "Include call flow events showing what happened during the call",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CallV2Wrapper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/calls/{uuid}.json": {
+      "get": {
+        "tags": ["Calls V2"],
+        "summary": "Get a specific call by UUID (V2)",
+        "description": "Retrieve detailed V2 information about a specific call using its UUID.",
+        "operationId": "getCallByUuidV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallV2Wrapper"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/affiliates.json": {
+      "get": {
+        "tags": ["Affiliates"],
+        "summary": "Get all affiliates",
+        "description": "Retrieve a complete list of affiliates. Affiliates are also known as Publishers or Sources.",
+        "operationId": "getAffiliates",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AffiliateWrapper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Affiliates"],
+        "summary": "Create an affiliate",
+        "description": "Create a new affiliate with identifying information.",
+        "operationId": "createAffiliate",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AffiliateCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Affiliate created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AffiliateWrapper"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/affiliates/afid/{afid}.json": {
+      "get": {
+        "tags": ["Affiliates"],
+        "summary": "Get a specific affiliate by AFID",
+        "description": "Retrieve an affiliate using your custom affiliate ID.",
+        "operationId": "getAffiliateByAfid",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "afid",
+            "in": "path",
+            "required": true,
+            "description": "The custom affiliate ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AffiliateWrapper"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Affiliates"],
+        "summary": "Update an affiliate",
+        "description": "Update any attributes of an existing affiliate.",
+        "operationId": "updateAffiliate",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "afid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AffiliateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Affiliate updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AffiliateWrapper"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Affiliates"],
+        "summary": "Delete an affiliate",
+        "description": "Delete an affiliate. You must delete any numbers associated with the affiliate first.",
+        "operationId": "deleteAffiliate",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "afid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Affiliate deleted successfully"
+          }
+        }
+      }
+    },
+    "/targets.json": {
+      "get": {
+        "tags": ["Targets"],
+        "summary": "Get all targets",
+        "description": "Retrieve all destination phone numbers (targets) that calls can be routed to.",
+        "operationId": "getTargets",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TargetWrapper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Targets"],
+        "summary": "Create a target",
+        "description": "Create a new target with phone number and routing configuration.",
+        "operationId": "createTarget",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TargetCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Target created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetWrapper"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/targets/{id}.json": {
+      "get": {
+        "tags": ["Targets"],
+        "summary": "Get a specific target",
+        "description": "Retrieve a target by its internal ID.",
+        "operationId": "getTargetById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The internal target ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetWrapper"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Targets"],
+        "summary": "Update a target",
+        "description": "Update any attributes of an existing target.",
+        "operationId": "updateTarget",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TargetUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Target updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetWrapper"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Targets"],
+        "summary": "Delete a target",
+        "description": "Delete a target by its internal ID.",
+        "operationId": "deleteTarget",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Target deleted successfully"
+          }
+        }
+      }
+    },
+    "/targets/{id}/reset_cap.json": {
+      "post": {
+        "tags": ["Targets"],
+        "summary": "Reset target hard cap",
+        "description": "Clear calls contributing to the target's hard cap, resetting it to 0.",
+        "operationId": "resetTargetCap",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cap reset successfully"
+          }
+        }
+      }
+    },
+    "/campaigns.json": {
+      "get": {
+        "tags": ["Campaigns"],
+        "summary": "Get all campaigns",
+        "description": "List all campaigns with their routing settings and IVR configuration.",
+        "operationId": "getCampaigns",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CampaignWrapper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Campaigns"],
+        "summary": "Create a campaign",
+        "description": "Create a new campaign with greeting, timers, and menu options.",
+        "operationId": "createCampaign",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Campaign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignWrapper"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaigns/cid/{cid}.json": {
+      "get": {
+        "tags": ["Campaigns"],
+        "summary": "Get a specific campaign by CID",
+        "description": "Retrieve a campaign using your custom campaign ID.",
+        "operationId": "getCampaignByCid",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "The custom campaign ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignWrapper"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Campaigns"],
+        "summary": "Update a campaign",
+        "description": "Update any attributes of an existing campaign.",
+        "operationId": "updateCampaign",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campaign updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignWrapper"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Campaigns"],
+        "summary": "Delete a campaign",
+        "description": "Delete a campaign. You must delete all numbers belonging to the campaign first.",
+        "operationId": "deleteCampaign",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Campaign deleted successfully"
+          }
+        }
+      }
+    },
+    "/numbers.json": {
+      "get": {
+        "tags": ["Numbers"],
+        "summary": "Get all numbers",
+        "description": "Retrieve all phone numbers routed to campaigns.",
+        "operationId": "getNumbers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ApiKey"
+          },
+          {
+            "$ref": "#/components/parameters/CompanyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NumberWrapper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "api_key",
+        "description": "API key for authentication. Get yours at https://retreaver.com/users/edit"
+      }
+    },
+    "parameters": {
+      "ApiKey": {
+        "name": "api_key",
+        "in": "query",
+        "required": true,
+        "description": "Your Retreaver API key",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "CompanyId": {
+        "name": "company_id",
+        "in": "query",
+        "required": false,
+        "description": "Required if you have access to multiple companies",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "schemas": {
+      "CallV1Wrapper": {
+        "type": "object",
+        "properties": {
+          "call": {
+            "$ref": "#/components/schemas/CallV1"
+          }
+        }
+      },
+      "CallV1": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the call"
+          },
+          "caller": {
+            "type": "string",
+            "description": "Caller's phone number in E.164 format",
+            "example": "+17195220377"
+          },
+          "caller_zip": {
+            "type": "string",
+            "nullable": true,
+            "description": "Caller's ZIP code"
+          },
+          "caller_state": {
+            "type": "string",
+            "nullable": true,
+            "description": "Caller's state"
+          },
+          "caller_city": {
+            "type": "string",
+            "nullable": true,
+            "description": "Caller's city"
+          },
+          "caller_country": {
+            "type": "string",
+            "nullable": true,
+            "description": "Caller's country code"
+          },
+          "dialed_call_duration": {
+            "type": "integer",
+            "description": "Duration of the connected call in seconds"
+          },
+          "total_duration": {
+            "type": "integer",
+            "description": "Total duration including IVR and hold time in seconds"
+          },
+          "status": {
+            "type": "string",
+            "description": "Call status",
+            "enum": ["finished", "in_progress"]
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the call started"
+          },
+          "forwarded_time": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the call was forwarded to target"
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the call ended"
+          },
+          "cid": {
+            "type": "string",
+            "description": "Campaign ID"
+          },
+          "afid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Affiliate ID"
+          },
+          "sid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Sub ID"
+          },
+          "dialed_number": {
+            "type": "string",
+            "description": "Number that was dialed"
+          },
+          "recording_url": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true,
+            "description": "URL to call recording"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CallV2Wrapper": {
+        "type": "object",
+        "properties": {
+          "call": {
+            "$ref": "#/components/schemas/CallV2"
+          }
+        }
+      },
+      "CallV2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CallV1"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "affiliate_name": {
+                "type": "string",
+                "nullable": true,
+                "description": "Full name of the affiliate"
+              },
+              "campaign_id": {
+                "type": "integer",
+                "description": "Internal campaign ID"
+              },
+              "campaign_name": {
+                "type": "string",
+                "description": "Name of the campaign"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "Whether caller was connected to a target"
+              },
+              "number_id": {
+                "type": "integer",
+                "description": "ID of the number that received the call"
+              },
+              "profit_gross": {
+                "type": "string",
+                "description": "Gross profit: revenue - payout - cost"
+              },
+              "profit_net": {
+                "type": "number",
+                "description": "Net profit: revenue - payout"
+              },
+              "target_id": {
+                "type": "integer",
+                "nullable": true,
+                "description": "ID of target the caller was connected to"
+              },
+              "target_name": {
+                "type": "string",
+                "nullable": true,
+                "description": "Name of the target"
+              },
+              "time_to_call_in_seconds": {
+                "type": "integer",
+                "description": "Time it took for caller to make the call"
+              },
+              "time_to_connect_in_seconds": {
+                "type": "integer",
+                "description": "IVR duration + hold duration"
+              },
+              "total_cost": {
+                "type": "string",
+                "description": "Total cost of the call"
+              },
+              "revenue": {
+                "type": "number",
+                "nullable": true,
+                "description": "Revenue from the call"
+              },
+              "payout": {
+                "type": "number",
+                "nullable": true,
+                "description": "Payout for the call"
+              },
+              "converted": {
+                "type": "boolean",
+                "description": "Whether the call converted"
+              },
+              "payable": {
+                "type": "boolean",
+                "description": "Whether the call is payable"
+              },
+              "receivable": {
+                "type": "boolean",
+                "description": "Whether the call is receivable"
+              },
+              "tags": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "Tags applied to the call"
+              },
+              "fired_pixels": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FiredPixelWrapper"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "FiredPixelWrapper": {
+        "type": "object",
+        "properties": {
+          "fired_pixel": {
+            "$ref": "#/components/schemas/FiredPixel"
+          }
+        }
+      },
+      "FiredPixel": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "fire_order": {
+            "type": "integer"
+          },
+          "batch_uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fired_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["new", "fired"]
+          },
+          "webhook_name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AffiliateWrapper": {
+        "type": "object",
+        "properties": {
+          "affiliate": {
+            "$ref": "#/components/schemas/Affiliate"
+          }
+        }
+      },
+      "Affiliate": {
+        "type": "object",
+        "properties": {
+          "afid": {
+            "type": "string",
+            "description": "Your custom affiliate ID"
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "company_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AffiliateCreateRequest": {
+        "type": "object",
+        "required": ["affiliate"],
+        "properties": {
+          "affiliate": {
+            "type": "object",
+            "required": ["afid"],
+            "properties": {
+              "afid": {
+                "type": "string",
+                "description": "Your custom affiliate ID (required)"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "company_name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "AffiliateUpdateRequest": {
+        "type": "object",
+        "required": ["affiliate"],
+        "properties": {
+          "affiliate": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "company_name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "TargetWrapper": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "$ref": "#/components/schemas/Target"
+          }
+        }
+      },
+      "Target": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Internal target ID"
+          },
+          "number": {
+            "type": "string",
+            "description": "Phone number or SIP endpoint"
+          },
+          "name": {
+            "type": "string",
+            "description": "Descriptive name for the target"
+          },
+          "tid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Your custom target ID"
+          },
+          "priority": {
+            "type": "integer",
+            "default": 1,
+            "description": "Lower priority targets are considered first"
+          },
+          "weight": {
+            "type": "integer",
+            "default": 1,
+            "description": "Used to randomize order of same-priority targets"
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "default": 30,
+            "description": "Max seconds to wait while ringing"
+          },
+          "send_digits": {
+            "type": "string",
+            "nullable": true,
+            "description": "DTMF tones to send when answered (use 'w' for 0.5s pause)"
+          },
+          "concurrency_cap": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Max concurrent calls allowed"
+          },
+          "paused": {
+            "type": "boolean",
+            "default": false,
+            "description": "Paused targets won't receive calls"
+          },
+          "time_zone": {
+            "type": "string",
+            "default": "UTC",
+            "description": "Time zone for business hours"
+          },
+          "sip_username": {
+            "type": "string",
+            "nullable": true
+          },
+          "sip_password": {
+            "type": "string",
+            "nullable": true
+          },
+          "caps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cap"
+            }
+          },
+          "business_hours": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BusinessHours"
+            }
+          },
+          "tag_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagValue"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Cap": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "filled": {
+            "type": "integer"
+          },
+          "cap": {
+            "type": "integer",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Hard", "Hourly", "Daily", "Monthly"]
+          }
+        }
+      },
+      "BusinessHours": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "day_of_week": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6,
+            "description": "0=Sunday, 6=Saturday"
+          },
+          "work_day": {
+            "type": "boolean",
+            "default": true
+          },
+          "time_open": {
+            "type": "integer",
+            "default": 0,
+            "description": "24-hour format HHMM"
+          },
+          "time_close": {
+            "type": "integer",
+            "default": 2400,
+            "description": "24-hour format HHMM"
+          },
+          "invert": {
+            "type": "boolean",
+            "default": false,
+            "description": "Invert open/closed hours"
+          }
+        }
+      },
+      "TagValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["==", "!=", ">", "<", ">=", "<="]
+          }
+        }
+      },
+      "TargetCreateRequest": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "target": {
+            "type": "object",
+            "required": ["number"],
+            "properties": {
+              "number": {
+                "type": "string",
+                "description": "Phone number (E.164) or SIP endpoint (required)"
+              },
+              "name": {
+                "type": "string"
+              },
+              "tid": {
+                "type": "string"
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "weight": {
+                "type": "integer"
+              },
+              "timeout_seconds": {
+                "type": "integer"
+              },
+              "send_digits": {
+                "type": "string"
+              },
+              "concurrency_cap": {
+                "type": "integer"
+              },
+              "paused": {
+                "type": "boolean"
+              },
+              "time_zone": {
+                "type": "string"
+              },
+              "sip_username": {
+                "type": "string"
+              },
+              "sip_password": {
+                "type": "string"
+              },
+              "business_hours_attributes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "day_of_week": {
+                      "type": "integer"
+                    },
+                    "work_day": {
+                      "type": "boolean"
+                    },
+                    "time_open": {
+                      "type": "integer"
+                    },
+                    "time_close": {
+                      "type": "integer"
+                    },
+                    "inverted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "TargetUpdateRequest": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "target": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              },
+              "paused": {
+                "type": "boolean"
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "weight": {
+                "type": "integer"
+              },
+              "timeout_seconds": {
+                "type": "integer"
+              },
+              "concurrency_cap": {
+                "type": "integer"
+              },
+              "tag_list": {
+                "type": "string",
+                "description": "Comma-delimited list of tags in format: <<<key:value>>>"
+              },
+              "hard_cap_attributes": {
+                "type": "object",
+                "properties": {
+                  "cap": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "hourly_cap_attributes": {
+                "type": "object",
+                "properties": {
+                  "cap": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "daily_cap_attributes": {
+                "type": "object",
+                "properties": {
+                  "cap": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "monthly_cap_attributes": {
+                "type": "object",
+                "properties": {
+                  "cap": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CampaignWrapper": {
+        "type": "object",
+        "properties": {
+          "campaign": {
+            "$ref": "#/components/schemas/Campaign"
+          }
+        }
+      },
+      "Campaign": {
+        "type": "object",
+        "properties": {
+          "cid": {
+            "type": "string",
+            "description": "Your custom campaign ID"
+          },
+          "name": {
+            "type": "string"
+          },
+          "record_calls": {
+            "type": "boolean",
+            "default": true
+          },
+          "record_seconds": {
+            "type": "integer",
+            "description": "Max recording length in seconds"
+          },
+          "dedupe_seconds": {
+            "type": "integer",
+            "default": 0,
+            "description": "Prevent repeat callers from firing timers within N seconds"
+          },
+          "affiliate_can_pull_number": {
+            "type": "boolean",
+            "default": false
+          },
+          "show_key": {
+            "type": "string",
+            "description": "Key for accessing campaign data"
+          },
+          "greeting": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "voice_gender": {
+                "type": "string",
+                "enum": ["Male", "Female"]
+              }
+            }
+          },
+          "timers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimerWrapper"
+            }
+          },
+          "menu_options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuOptionWrapper"
+            }
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TimerWrapper": {
+        "type": "object",
+        "properties": {
+          "timer": {
+            "$ref": "#/components/schemas/Timer"
+          }
+        }
+      },
+      "Timer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "seconds": {
+            "type": "integer",
+            "description": "0 = click timer, >0 = sale timer"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "MenuOptionWrapper": {
+        "type": "object",
+        "properties": {
+          "menu_option": {
+            "$ref": "#/components/schemas/MenuOption"
+          }
+        }
+      },
+      "MenuOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "option": {
+            "type": "string",
+            "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "*", "#"]
+          },
+          "target_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "target_cid": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CampaignCreateRequest": {
+        "type": "object",
+        "required": ["campaign"],
+        "properties": {
+          "campaign": {
+            "type": "object",
+            "properties": {
+              "cid": {
+                "type": "string",
+                "description": "Your custom campaign ID (8 chars if not provided)"
+              },
+              "name": {
+                "type": "string"
+              },
+              "dedupe_seconds": {
+                "type": "integer"
+              },
+              "record_calls": {
+                "type": "boolean"
+              },
+              "message": {
+                "type": "string",
+                "description": "Text-to-speech greeting"
+              },
+              "voice_gender": {
+                "type": "string",
+                "enum": ["Male", "Female"]
+              },
+              "repeat": {
+                "type": "integer",
+                "default": 4,
+                "description": "Times to repeat greeting"
+              },
+              "timers_attributes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["seconds", "url"],
+                  "properties": {
+                    "seconds": {
+                      "type": "integer"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              },
+              "menu_options_attributes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["option"],
+                  "properties": {
+                    "option": {
+                      "type": "string"
+                    },
+                    "target_number": {
+                      "type": "string"
+                    },
+                    "target_cid": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CampaignUpdateRequest": {
+        "type": "object",
+        "required": ["campaign"],
+        "properties": {
+          "campaign": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "dedupe_seconds": {
+                "type": "integer"
+              },
+              "record_calls": {
+                "type": "boolean"
+              },
+              "message": {
+                "type": "string"
+              },
+              "voice_gender": {
+                "type": "string"
+              },
+              "destroy_nested": {
+                "type": "boolean",
+                "description": "Remove existing timers and menu options"
+              }
+            }
+          }
+        }
+      },
+      "NumberWrapper": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "$ref": "#/components/schemas/Number"
+          }
+        }
+      },
+      "Number": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "string",
+            "description": "The phone number"
+          },
+          "toll_free": {
+            "type": "boolean"
+          },
+          "sid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Sub ID"
+          },
+          "afid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Affiliate ID"
+          },
+          "cid": {
+            "type": "string",
+            "description": "Campaign ID"
+          },
+          "uses_campaign_settings": {
+            "type": "boolean",
+            "description": "Whether number uses campaign settings"
+          },
+          "greeting": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "voice_gender": {
+                "type": "string"
+              },
+              "inherited": {
+                "type": "boolean"
+              }
+            }
+          },
+          "timers": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Timer"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inherited": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "menu_options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "menu_option": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/MenuOption"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "inherited": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  },
+  "x-postman-info": {
+    "name": "Retreaver Core API",
+    "description": "Import this collection into Postman to get started with the Retreaver Core API.\n\n## Setup Instructions:\n1. Import this OpenAPI spec into Postman\n2. Create an environment variable named `api_key` with your Retreaver API key\n3. Create an environment variable named `company_id` with your company ID (if applicable)\n4. All requests will automatically use these variables\n\n## Authentication:\nYour API key is passed as a query parameter on every request. You can find your API key at https://retreaver.com/users/edit\n\n## Important Notes:\n- The API returns 25 results per page\n- Check the Link header for pagination URLs\n- Use `.json` extension for JSON responses or `.xml` for XML\n- Never expose your API key publicly!",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  }
+}

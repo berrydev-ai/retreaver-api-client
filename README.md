@@ -404,7 +404,3 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-Generated with [OpenAPI Generator](https://openapi-generator.tech)
