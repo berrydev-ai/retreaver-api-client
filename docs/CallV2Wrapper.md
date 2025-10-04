@@ -1,11 +1,10 @@
 # CallV2Wrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**call** | [**CallV2**](CallV2.md) |  | [optional] [default to undefined]
+| Name     | Type                    | Description | Notes                             |
+| -------- | ----------------------- | ----------- | --------------------------------- |
+| **call** | [**CallV2**](CallV2.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { CallV2Wrapper } from 'retreaver-api-client';
 
 const instance: CallV2Wrapper = {
-    call,
+  call,
 };
 ```
 

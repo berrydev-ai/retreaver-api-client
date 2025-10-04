@@ -1,11 +1,10 @@
 # MenuOptionWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**menu_option** | [**MenuOption**](MenuOption.md) |  | [optional] [default to undefined]
+| Name            | Type                            | Description | Notes                             |
+| --------------- | ------------------------------- | ----------- | --------------------------------- |
+| **menu_option** | [**MenuOption**](MenuOption.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { MenuOptionWrapper } from 'retreaver-api-client';
 
 const instance: MenuOptionWrapper = {
-    menu_option,
+  menu_option,
 };
 ```
 

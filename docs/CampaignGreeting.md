@@ -1,12 +1,11 @@
 # CampaignGreeting
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**message** | **string** |  | [optional] [default to undefined]
-**voice_gender** | **string** |  | [optional] [default to undefined]
+| Name             | Type       | Description | Notes                             |
+| ---------------- | ---------- | ----------- | --------------------------------- |
+| **message**      | **string** |             | [optional] [default to undefined] |
+| **voice_gender** | **string** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -14,8 +13,8 @@ Name | Type | Description | Notes
 import { CampaignGreeting } from 'retreaver-api-client';
 
 const instance: CampaignGreeting = {
-    message,
-    voice_gender,
+  message,
+  voice_gender,
 };
 ```
 

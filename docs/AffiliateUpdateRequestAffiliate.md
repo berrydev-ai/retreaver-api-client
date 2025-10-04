@@ -1,13 +1,12 @@
 # AffiliateUpdateRequestAffiliate
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**first_name** | **string** |  | [optional] [default to undefined]
-**last_name** | **string** |  | [optional] [default to undefined]
-**company_name** | **string** |  | [optional] [default to undefined]
+| Name             | Type       | Description | Notes                             |
+| ---------------- | ---------- | ----------- | --------------------------------- |
+| **first_name**   | **string** |             | [optional] [default to undefined] |
+| **last_name**    | **string** |             | [optional] [default to undefined] |
+| **company_name** | **string** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -15,9 +14,9 @@ Name | Type | Description | Notes
 import { AffiliateUpdateRequestAffiliate } from 'retreaver-api-client';
 
 const instance: AffiliateUpdateRequestAffiliate = {
-    first_name,
-    last_name,
-    company_name,
+  first_name,
+  last_name,
+  company_name,
 };
 ```
 

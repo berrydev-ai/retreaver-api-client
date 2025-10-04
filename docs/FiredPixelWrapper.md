@@ -1,11 +1,10 @@
 # FiredPixelWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**fired_pixel** | [**FiredPixel**](FiredPixel.md) |  | [optional] [default to undefined]
+| Name            | Type                            | Description | Notes                             |
+| --------------- | ------------------------------- | ----------- | --------------------------------- |
+| **fired_pixel** | [**FiredPixel**](FiredPixel.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { FiredPixelWrapper } from 'retreaver-api-client';
 
 const instance: FiredPixelWrapper = {
-    fired_pixel,
+  fired_pixel,
 };
 ```
 

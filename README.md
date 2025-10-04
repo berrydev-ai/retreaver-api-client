@@ -25,7 +25,7 @@ import { Configuration, CallsV2Api } from 'retreaver-api-client';
 
 // Configure the API client with your API key
 const config = new Configuration({
-  apiKey: 'your_api_key_here'
+  apiKey: 'your_api_key_here',
 });
 
 // Create an API instance
@@ -42,12 +42,13 @@ console.log(calls.data);
 const { Configuration, CallsV2Api } = require('retreaver-api-client');
 
 const config = new Configuration({
-  apiKey: 'your_api_key_here'
+  apiKey: 'your_api_key_here',
 });
 
 const callsApi = new CallsV2Api(config);
 
-callsApi.getCallsV2('your_api_key_here')
+callsApi
+  .getCallsV2('your_api_key_here')
   .then(response => console.log(response.data))
   .catch(error => console.error(error));
 ```
@@ -60,7 +61,7 @@ All API requests require an API key. You can obtain your API key from [https://r
 
 ```typescript
 const config = new Configuration({
-  apiKey: process.env.RETREAVER_API_KEY
+  apiKey: process.env.RETREAVER_API_KEY,
 });
 ```
 
@@ -109,10 +110,7 @@ console.log(response.data);
 
 ```typescript
 const callUuid = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
-const response = await callsApi.getCallByUuidV2(
-  callUuid,
-  process.env.RETREAVER_API_KEY
-);
+const response = await callsApi.getCallByUuidV2(callUuid, process.env.RETREAVER_API_KEY);
 
 console.log(response.data.call);
 ```
@@ -129,17 +127,14 @@ const affiliatesApi = new AffiliatesApi(config);
 const affiliates = await affiliatesApi.getAffiliates(process.env.RETREAVER_API_KEY);
 
 // Create a new affiliate
-const newAffiliate = await affiliatesApi.createAffiliate(
-  process.env.RETREAVER_API_KEY,
-  {
-    affiliate: {
-      afid: 'affiliate-123',
-      first_name: 'John',
-      last_name: 'Doe',
-      company_name: 'Acme Corp'
-    }
-  }
-);
+const newAffiliate = await affiliatesApi.createAffiliate(process.env.RETREAVER_API_KEY, {
+  affiliate: {
+    afid: 'affiliate-123',
+    first_name: 'John',
+    last_name: 'Doe',
+    company_name: 'Acme Corp',
+  },
+});
 
 // Update an affiliate
 const updated = await affiliatesApi.updateAffiliate(
@@ -147,8 +142,8 @@ const updated = await affiliatesApi.updateAffiliate(
   process.env.RETREAVER_API_KEY,
   {
     affiliate: {
-      company_name: 'Updated Company Name'
-    }
+      company_name: 'Updated Company Name',
+    },
   }
 );
 
@@ -168,17 +163,14 @@ const targetsApi = new TargetsApi(config);
 const targets = await targetsApi.getTargets(process.env.RETREAVER_API_KEY);
 
 // Create a new target
-const newTarget = await targetsApi.createTarget(
-  process.env.RETREAVER_API_KEY,
-  {
-    target: {
-      number: '+15551234567',
-      name: 'Sales Team',
-      priority: 1,
-      timeout_seconds: 30
-    }
-  }
-);
+const newTarget = await targetsApi.createTarget(process.env.RETREAVER_API_KEY, {
+  target: {
+    number: '+15551234567',
+    name: 'Sales Team',
+    priority: 1,
+    timeout_seconds: 30,
+  },
+});
 
 // Update a target
 const updatedTarget = await targetsApi.updateTarget(
@@ -187,8 +179,8 @@ const updatedTarget = await targetsApi.updateTarget(
   {
     target: {
       name: 'Updated Sales Team',
-      paused: false
-    }
+      paused: false,
+    },
   }
 );
 
@@ -208,30 +200,23 @@ const campaignsApi = new CampaignsApi(config);
 const campaigns = await campaignsApi.getCampaigns(process.env.RETREAVER_API_KEY);
 
 // Create a campaign
-const newCampaign = await campaignsApi.createCampaign(
-  process.env.RETREAVER_API_KEY,
-  {
-    campaign: {
-      cid: 'campaign-123',
-      name: 'My Campaign',
-      record_calls: true,
-      message: 'Welcome to our service',
-      voice_gender: 'Female'
-    }
-  }
-);
+const newCampaign = await campaignsApi.createCampaign(process.env.RETREAVER_API_KEY, {
+  campaign: {
+    cid: 'campaign-123',
+    name: 'My Campaign',
+    record_calls: true,
+    message: 'Welcome to our service',
+    voice_gender: 'Female',
+  },
+});
 
 // Update a campaign
-const updated = await campaignsApi.updateCampaign(
-  'campaign-123',
-  process.env.RETREAVER_API_KEY,
-  {
-    campaign: {
-      name: 'Updated Campaign Name',
-      dedupe_seconds: 300
-    }
-  }
-);
+const updated = await campaignsApi.updateCampaign('campaign-123', process.env.RETREAVER_API_KEY, {
+  campaign: {
+    name: 'Updated Campaign Name',
+    dedupe_seconds: 300,
+  },
+});
 ```
 
 ### Working with Numbers
@@ -264,48 +249,48 @@ All URIs are relative to `https://api.retreaver.com`
 
 #### Calls API
 
-| Method | HTTP Request | Description |
-|--------|--------------|-------------|
-| `getCallsV1` | `GET /calls.json` | Get recent calls (V1) |
-| `getCallByUuidV1` | `GET /calls/{uuid}.json` | Get specific call by UUID (V1) |
-| `getCallsV2` | `GET /api/v2/calls.json` | Get recent calls (V2) |
+| Method            | HTTP Request                    | Description                    |
+| ----------------- | ------------------------------- | ------------------------------ |
+| `getCallsV1`      | `GET /calls.json`               | Get recent calls (V1)          |
+| `getCallByUuidV1` | `GET /calls/{uuid}.json`        | Get specific call by UUID (V1) |
+| `getCallsV2`      | `GET /api/v2/calls.json`        | Get recent calls (V2)          |
 | `getCallByUuidV2` | `GET /api/v2/calls/{uuid}.json` | Get specific call by UUID (V2) |
 
 #### Affiliates API
 
-| Method | HTTP Request | Description |
-|--------|--------------|-------------|
-| `getAffiliates` | `GET /affiliates.json` | Get all affiliates |
-| `createAffiliate` | `POST /affiliates.json` | Create an affiliate |
-| `getAffiliateByAfid` | `GET /affiliates/afid/{afid}.json` | Get affiliate by AFID |
-| `updateAffiliate` | `PUT /affiliates/afid/{afid}.json` | Update an affiliate |
-| `deleteAffiliate` | `DELETE /affiliates/afid/{afid}.json` | Delete an affiliate |
+| Method               | HTTP Request                          | Description           |
+| -------------------- | ------------------------------------- | --------------------- |
+| `getAffiliates`      | `GET /affiliates.json`                | Get all affiliates    |
+| `createAffiliate`    | `POST /affiliates.json`               | Create an affiliate   |
+| `getAffiliateByAfid` | `GET /affiliates/afid/{afid}.json`    | Get affiliate by AFID |
+| `updateAffiliate`    | `PUT /affiliates/afid/{afid}.json`    | Update an affiliate   |
+| `deleteAffiliate`    | `DELETE /affiliates/afid/{afid}.json` | Delete an affiliate   |
 
 #### Targets API
 
-| Method | HTTP Request | Description |
-|--------|--------------|-------------|
-| `getTargets` | `GET /targets.json` | Get all targets |
-| `createTarget` | `POST /targets.json` | Create a target |
-| `getTargetById` | `GET /targets/{id}.json` | Get specific target |
-| `updateTarget` | `PUT /targets/{id}.json` | Update a target |
-| `deleteTarget` | `DELETE /targets/{id}.json` | Delete a target |
+| Method           | HTTP Request                        | Description           |
+| ---------------- | ----------------------------------- | --------------------- |
+| `getTargets`     | `GET /targets.json`                 | Get all targets       |
+| `createTarget`   | `POST /targets.json`                | Create a target       |
+| `getTargetById`  | `GET /targets/{id}.json`            | Get specific target   |
+| `updateTarget`   | `PUT /targets/{id}.json`            | Update a target       |
+| `deleteTarget`   | `DELETE /targets/{id}.json`         | Delete a target       |
 | `resetTargetCap` | `POST /targets/{id}/reset_cap.json` | Reset target hard cap |
 
 #### Campaigns API
 
-| Method | HTTP Request | Description |
-|--------|--------------|-------------|
-| `getCampaigns` | `GET /campaigns.json` | Get all campaigns |
-| `createCampaign` | `POST /campaigns.json` | Create a campaign |
-| `getCampaignByCid` | `GET /campaigns/cid/{cid}.json` | Get campaign by CID |
-| `updateCampaign` | `PUT /campaigns/cid/{cid}.json` | Update a campaign |
-| `deleteCampaign` | `DELETE /campaigns/cid/{cid}.json` | Delete a campaign |
+| Method             | HTTP Request                       | Description         |
+| ------------------ | ---------------------------------- | ------------------- |
+| `getCampaigns`     | `GET /campaigns.json`              | Get all campaigns   |
+| `createCampaign`   | `POST /campaigns.json`             | Create a campaign   |
+| `getCampaignByCid` | `GET /campaigns/cid/{cid}.json`    | Get campaign by CID |
+| `updateCampaign`   | `PUT /campaigns/cid/{cid}.json`    | Update a campaign   |
+| `deleteCampaign`   | `DELETE /campaigns/cid/{cid}.json` | Delete a campaign   |
 
 #### Numbers API
 
-| Method | HTTP Request | Description |
-|--------|--------------|-------------|
+| Method       | HTTP Request        | Description     |
+| ------------ | ------------------- | --------------- |
 | `getNumbers` | `GET /numbers.json` | Get all numbers |
 
 ## Pagination
@@ -366,6 +351,7 @@ npm run build
 ```
 
 This will generate:
+
 - CommonJS output in `dist/`
 - ES Modules output in `dist/esm/`
 
@@ -401,6 +387,75 @@ const call: CallV2 = {
 
 MIT
 
+## Testing
+
+This project includes a comprehensive test suite using Vitest. For detailed testing guidelines, see [TESTING.md](./TESTING.md).
+
+### Running Tests
+
+```bash
+# Development mode (watch)
+npm test
+
+# Run tests once
+npm run test:run
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests with UI
+npm run test:ui
+```
+
+### Test Structure
+
+- **Unit tests** for all API classes, models, and utilities
+- **Mock data** based on API documentation examples
+- **HTTP mocking** using axios-mock-adapter
+- **TypeScript support** with full type checking
+- **Coverage reporting** with 80% minimum threshold
+
+### Quality Assurance
+
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **Husky** for pre-commit hooks
+- **GitHub Actions** for CI/CD
+- **Security audits** with npm audit
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see [TESTING.md](./TESTING.md) for testing guidelines and [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed contribution guidelines.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/berrydev-ai/retreaver-api-client.git
+cd retreaver-api-client
+
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Build the project
+npm run build
+```
+
+### Pre-commit Hooks
+
+This project uses Husky and lint-staged to ensure code quality:
+
+- **Lint and format** code before commits
+- **Run tests** before pushes
+- **Type checking** for TypeScript files
+
+### Pull Request Process
+
+1. Fork the repository
+2. Create a feature branch
+3. Write tests for new functionality
+4. Ensure all tests pass and coverage is maintained
+5. Submit a pull request with a clear description

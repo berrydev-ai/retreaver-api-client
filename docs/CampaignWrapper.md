@@ -1,11 +1,10 @@
 # CampaignWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**campaign** | [**Campaign**](Campaign.md) |  | [optional] [default to undefined]
+| Name         | Type                        | Description | Notes                             |
+| ------------ | --------------------------- | ----------- | --------------------------------- |
+| **campaign** | [**Campaign**](Campaign.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { CampaignWrapper } from 'retreaver-api-client';
 
 const instance: CampaignWrapper = {
-    campaign,
+  campaign,
 };
 ```
 

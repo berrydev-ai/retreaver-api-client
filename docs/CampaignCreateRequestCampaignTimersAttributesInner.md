@@ -1,12 +1,11 @@
 # CampaignCreateRequestCampaignTimersAttributesInner
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**seconds** | **number** |  | [default to undefined]
-**url** | **string** |  | [default to undefined]
+| Name        | Type       | Description | Notes                  |
+| ----------- | ---------- | ----------- | ---------------------- |
+| **seconds** | **number** |             | [default to undefined] |
+| **url**     | **string** |             | [default to undefined] |
 
 ## Example
 
@@ -14,8 +13,8 @@ Name | Type | Description | Notes
 import { CampaignCreateRequestCampaignTimersAttributesInner } from 'retreaver-api-client';
 
 const instance: CampaignCreateRequestCampaignTimersAttributesInner = {
-    seconds,
-    url,
+  seconds,
+  url,
 };
 ```
 

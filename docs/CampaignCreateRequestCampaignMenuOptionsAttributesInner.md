@@ -1,13 +1,12 @@
 # CampaignCreateRequestCampaignMenuOptionsAttributesInner
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**option** | **string** |  | [default to undefined]
-**target_number** | **string** |  | [optional] [default to undefined]
-**target_cid** | **string** |  | [optional] [default to undefined]
+| Name              | Type       | Description | Notes                             |
+| ----------------- | ---------- | ----------- | --------------------------------- |
+| **option**        | **string** |             | [default to undefined]            |
+| **target_number** | **string** |             | [optional] [default to undefined] |
+| **target_cid**    | **string** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -15,9 +14,9 @@ Name | Type | Description | Notes
 import { CampaignCreateRequestCampaignMenuOptionsAttributesInner } from 'retreaver-api-client';
 
 const instance: CampaignCreateRequestCampaignMenuOptionsAttributesInner = {
-    option,
-    target_number,
-    target_cid,
+  option,
+  target_number,
+  target_cid,
 };
 ```
 

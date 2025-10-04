@@ -1,14 +1,13 @@
 # AffiliateCreateRequestAffiliate
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**afid** | **string** | Your custom affiliate ID (required) | [default to undefined]
-**first_name** | **string** |  | [optional] [default to undefined]
-**last_name** | **string** |  | [optional] [default to undefined]
-**company_name** | **string** |  | [optional] [default to undefined]
+| Name             | Type       | Description                         | Notes                             |
+| ---------------- | ---------- | ----------------------------------- | --------------------------------- |
+| **afid**         | **string** | Your custom affiliate ID (required) | [default to undefined]            |
+| **first_name**   | **string** |                                     | [optional] [default to undefined] |
+| **last_name**    | **string** |                                     | [optional] [default to undefined] |
+| **company_name** | **string** |                                     | [optional] [default to undefined] |
 
 ## Example
 
@@ -16,10 +15,10 @@ Name | Type | Description | Notes
 import { AffiliateCreateRequestAffiliate } from 'retreaver-api-client';
 
 const instance: AffiliateCreateRequestAffiliate = {
-    afid,
-    first_name,
-    last_name,
-    company_name,
+  afid,
+  first_name,
+  last_name,
+  company_name,
 };
 ```
 

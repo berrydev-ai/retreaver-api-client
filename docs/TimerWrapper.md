@@ -1,11 +1,10 @@
 # TimerWrapper
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**timer** | [**Timer**](Timer.md) |  | [optional] [default to undefined]
+| Name      | Type                  | Description | Notes                             |
+| --------- | --------------------- | ----------- | --------------------------------- |
+| **timer** | [**Timer**](Timer.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { TimerWrapper } from 'retreaver-api-client';
 
 const instance: TimerWrapper = {
-    timer,
+  timer,
 };
 ```
 

@@ -1,11 +1,10 @@
 # TargetUpdateRequestTargetHardCapAttributes
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**cap** | **number** |  | [optional] [default to undefined]
+| Name    | Type       | Description | Notes                             |
+| ------- | ---------- | ----------- | --------------------------------- |
+| **cap** | **number** |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { TargetUpdateRequestTargetHardCapAttributes } from 'retreaver-api-client';
 
 const instance: TargetUpdateRequestTargetHardCapAttributes = {
-    cap,
+  cap,
 };
 ```
 

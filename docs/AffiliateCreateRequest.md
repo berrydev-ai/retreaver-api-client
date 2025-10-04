@@ -1,11 +1,10 @@
 # AffiliateCreateRequest
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**affiliate** | [**AffiliateCreateRequestAffiliate**](AffiliateCreateRequestAffiliate.md) |  | [default to undefined]
+| Name          | Type                                                                      | Description | Notes                  |
+| ------------- | ------------------------------------------------------------------------- | ----------- | ---------------------- |
+| **affiliate** | [**AffiliateCreateRequestAffiliate**](AffiliateCreateRequestAffiliate.md) |             | [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { AffiliateCreateRequest } from 'retreaver-api-client';
 
 const instance: AffiliateCreateRequest = {
-    affiliate,
+  affiliate,
 };
 ```
 

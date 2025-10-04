@@ -1,11 +1,10 @@
 # NumberMenuOptionsInner
 
-
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**menu_option** | [**NumberMenuOptionsInnerMenuOption**](NumberMenuOptionsInnerMenuOption.md) |  | [optional] [default to undefined]
+| Name            | Type                                                                        | Description | Notes                             |
+| --------------- | --------------------------------------------------------------------------- | ----------- | --------------------------------- |
+| **menu_option** | [**NumberMenuOptionsInnerMenuOption**](NumberMenuOptionsInnerMenuOption.md) |             | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +12,7 @@ Name | Type | Description | Notes
 import { NumberMenuOptionsInner } from 'retreaver-api-client';
 
 const instance: NumberMenuOptionsInner = {
-    menu_option,
+  menu_option,
 };
 ```
 
