@@ -1,6 +1,9 @@
 {
-  "name": "retreaver-api-client",
-  "version": "1.0.0",
+  "name": "@berrydev-ai/retreaver-api-client",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "TypeScript/JavaScript client for the Retreaver Core API - manage call tracking, routing, affiliates, campaigns, and more",
   "author": "Retreaver",
   "repository": {
